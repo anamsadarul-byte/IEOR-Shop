@@ -38,6 +38,10 @@ export interface DailyInventory {
 }
 
 export interface ItemAnalytics {
+  order: number;
+  shortage:number;
+  wastage:number;
+  inventory_fresh:number;
   item: string;
   shelfLifeDays: number;
   deliveryDays: number[];
@@ -52,6 +56,7 @@ export interface ItemAnalytics {
 }
 
 export interface DashboardData {
+  status: string;
   items: ItemAnalytics[];
   totalOrders: number;
   totalWaste: number;

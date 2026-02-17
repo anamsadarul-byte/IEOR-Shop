@@ -24,6 +24,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
 function DataGuard({ children }: { children: React.ReactNode }) {
   const { dashboardData } = useData();
+  console.log(dashboardData)
   if (!dashboardData) return <Navigate to="/upload" replace />;
   return <>{children}</>;
 }

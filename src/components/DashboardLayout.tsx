@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useData } from "@/context/DataContext";
 import { NavLink } from "@/components/NavLink";
 import {

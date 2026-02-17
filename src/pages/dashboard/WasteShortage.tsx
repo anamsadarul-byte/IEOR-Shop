@@ -9,7 +9,7 @@ const COLORS = ["hsl(160, 50%, 40%)", "hsl(0, 72%, 50%)", "hsl(35, 90%, 55%)"];
 
 const WasteShortage = () => {
   const { dashboardData } = useData();
-
+  console.log(dashboardData)
   if (!dashboardData) return <p className="text-muted-foreground">No data loaded.</p>;
 
   const items = dashboardData.items;

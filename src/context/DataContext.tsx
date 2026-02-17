@@ -9,6 +9,7 @@ interface DataContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => boolean;
   logout: () => void;
+  setDashboardData: (d: DashboardData) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -22,8 +23,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const setUploadedData = (data: UploadedData) => {
     setUploadedDataState(data);
-    const analytics = computeAnalytics(data);
-    setDashboardData(analytics);
   };
 
   const login = (email: string, password: string): boolean => {
@@ -43,7 +42,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DataContext.Provider value={{ uploadedData, dashboardData, setUploadedData, isAuthenticated, login, logout }}>
+    <DataContext.Provider value={{ uploadedData, dashboardData, setUploadedData, isAuthenticated, login, logout, setDashboardData }}>
       {children}
     </DataContext.Provider>
   );

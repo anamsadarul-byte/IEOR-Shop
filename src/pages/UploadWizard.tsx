@@ -39,6 +39,7 @@ const UploadWizard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { setUploadedData } = useData();
   const navigate = useNavigate();
+  const { setDashboardData } = useData();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -67,6 +68,32 @@ const UploadWizard = () => {
 
         const data: UploadedData = { forecastedDemand, currentInventory, shelfLife, deliverySchedule };
         setUploadedData(data);
+        const form = new FormData();
+        form.append("forecast", files[0]);
+        form.append("inventory", files[1]);
+        form.append("shelf", files[2]);
+        form.append("delivery", files[3]);
+
+        const response = await fetch("http://127.0.0.1:8000/run-model", {
+          method: "POST",
+          body: form,
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(errText || "API request failed");
+        }
+        const result = await response.json();
+        console.log("Optimization result:", result);
+        setDashboardData({
+          status: result.status,
+          items: result.results ?? [],
+          totalOrders: result.TotalOrders ?? 0,
+          totalWaste: result.TotalWaste ?? 0,
+          totalUnmetDemand: result.totalUnmetDemand ?? 0,
+          overallServiceLevel: result.serviceLevel ?? 0,
+          totalLeftover: result.leftover ?? 0
+        });
         navigate("/dashboard");
       } catch (err) {
         setError("Failed to parse Excel files. Please check the format and try again.");
